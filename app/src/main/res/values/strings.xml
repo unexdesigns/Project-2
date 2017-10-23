@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Project-2</string>
+    <string name="author">Žanas Stundys, MKDf 14–3</string>
+    <string name="intro_text">Sekančiame ekrane jus būsite nuvesti į langą, kuriame įvedus slaptą skaičių, atitinkamai pasikeis fono spalva.</string>
+    <string name="begin">Pradėti</string>
+    <string name="your_name_surname">Jūsų vardas, pavardė</string>
+    <string name="hello">Sveiki</string>
+    <string name="enter_number">Įveskite paprastą skaičių</string>
+    <string name="simple_number">Per paprastas skaičius.</string>
+    <string name="denominator_5">Jūsų skaičius dalijasi iš 5</string>
+    <string name="denominator_4">Jūsų skaičius dalijasi iš 4</string>
+    <string name="denominator_3">Jūsų skaičius dalijasi iš 3</string>
+    <string name="denominator_2">Jūsų skaičius dalijasi iš 2</string>
+    <string name="change_colors">Keisti spalvas</string>
 </resources>
