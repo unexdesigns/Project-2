@@ -3,6 +3,7 @@ package com.stundys.project_2;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,14 +20,19 @@ public class ColorChanger extends AppCompatActivity {
 
     boolean IsChangeColors = false;
 
+
     protected void setColorState(boolean state) {
         this.IsChangeColors = state;
+
+        if(state == true){
+            EditText field = (EditText) findViewById(R.id.number_field);
+            changeColor(field.getText());
+        }
     }
 
     boolean getColorState() {
         return this.IsChangeColors;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +41,10 @@ public class ColorChanger extends AppCompatActivity {
         greetUser();
 
         final EditText numberField = (EditText)  findViewById(R.id.number_field);
-        final Switch switcher = (Switch)  findViewById(R.id.switch1);
+        Switch switcher = (Switch)  findViewById(R.id.switch1);
+        final View colorViewer = findViewById(R.id.colorViewer);
         final TextView numberStatus = (TextView) findViewById(R.id.number_status);
+
 
 
 
@@ -52,9 +60,9 @@ public class ColorChanger extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-                String x = editable.toString();
-                View colorViewer = (View) findViewById(R.id.colorViewer);
+            public void afterTextChanged(Editable field) {
+                String x = field.toString();
+
 
                 x = x.replaceAll(".*(?=\\d)", "");
                 if(x.startsWith("0") || x == ""){
@@ -62,47 +70,60 @@ public class ColorChanger extends AppCompatActivity {
                     return;
                 }
 
-                try {
-                    Integer value = Integer.parseInt(editable.toString());
-
-
-
-                    int selectedColor = ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
-
-                    if(value % 5 == 0) {
-                        numberStatus.setText(R.string.denominator_5);
-                        selectedColor = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
-                    } else if (value % 4 == 0) {
-                        numberStatus.setText(R.string.denominator_4);
-                        selectedColor = ContextCompat.getColor(getApplicationContext(), R.color.yellow);
-                    } else if (value % 3 == 0) {
-                        numberStatus.setText(R.string.denominator_3);
-                        selectedColor = ContextCompat.getColor(getApplicationContext(), R.color.green);
-                    } else if (value % 2 == 0) {
-                        numberStatus.setText(R.string.denominator_2);
-                        selectedColor = ContextCompat.getColor(getApplicationContext(), R.color.purple);
-                    } else {
-                        numberStatus.setText(R.string.simple_number);
-                        selectedColor = ContextCompat.getColor(getApplicationContext(), R.color.cyan);
-                    }
-
-                    if(getColorState()) colorViewer.setBackgroundColor(selectedColor);
-
-                } catch (NumberFormatException e) {
-                    numberStatus.setText(R.string.enter_number);
-                    if(getColorState()) colorViewer.setBackgroundColor(0);
-                }
+                changeColor(field);
             }
         });
         switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    setColorState(true);
-                } else {
-                    setColorState(false);
-                }
+            if(isChecked){
+                setColorState(true);
+            } else {
+                setColorState(false);
+            }
             }
         });
+    }
+
+    protected void changeColor(Editable field){
+        final View colorViewer = (View) findViewById(R.id.colorViewer);
+        final TextView numberStatus = (TextView) findViewById(R.id.number_status);
+
+        int[] colors = {
+                ResourcesCompat.getColor(getResources(), R.color.yellow, null),
+                ResourcesCompat.getColor(getResources(), R.color.green, null),
+                ResourcesCompat.getColor(getResources(), R.color.cyan, null),
+                ResourcesCompat.getColor(getResources(), R.color.purple, null),
+                ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null),
+        };
+
+        try {
+            int value = Integer.parseInt(field.toString()),
+                    selectedColor;
+
+            if(value % 5 == 0) {
+                numberStatus.setText(R.string.denominator_5);
+                selectedColor = colors[0];
+            } else if (value % 4 == 0) {
+                numberStatus.setText(R.string.denominator_4);
+                selectedColor = colors[1];
+            } else if (value % 3 == 0) {
+                numberStatus.setText(R.string.denominator_3);
+                selectedColor = colors[2];
+            } else if (value % 2 == 0) {
+                numberStatus.setText(R.string.denominator_2);
+                selectedColor = colors[3];
+            } else {
+                numberStatus.setText(R.string.simple_number);
+                selectedColor = colors[4];
+            }
+
+            if(getColorState()) {
+                colorViewer.setBackgroundColor(selectedColor);
+            }
+        } catch (NumberFormatException e) {
+            numberStatus.setText(R.string.enter_number);
+            if(getColorState()) colorViewer.setBackgroundColor(0);
+        }
     }
 
     protected void greetUser(){
