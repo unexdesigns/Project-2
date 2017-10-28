@@ -20,7 +20,6 @@ public class ColorChanger extends AppCompatActivity {
 
     boolean IsChangeColors = false;
 
-
     protected void setColorState(boolean state) {
         this.IsChangeColors = state;
 
